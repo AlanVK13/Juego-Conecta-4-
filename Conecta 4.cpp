@@ -148,3 +148,18 @@ bool verificarVictoria(const Tablero& tablero, int fila, int col, char jugador) 
 
     return false;
 }
+
+/**
+ * Comprueba si el tablero está completamente lleno.
+ * @param tablero El tablero actual.
+ * @return true si el tablero está lleno, false en caso contrario.
+ */
+bool verificarEmpate(const Tablero& tablero) {
+    // Solo necesitamos revisar la fila superior (índice 0)
+    for (int j = 0; j < COLUMNAS; ++j) {
+        if (tablero[0][j] == VACIO) {
+            return false; // Si hay al menos un espacio vacío en la fila superior, no hay empate
+        }
+    }
+    return true; // Todos los espacios en la fila superior están llenos
+}
