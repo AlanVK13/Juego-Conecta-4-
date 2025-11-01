@@ -101,3 +101,50 @@ int colocarFicha(Tablero& tablero, int col, char jugador) {
     }
     return -1; // No debería suceder si la columna fue validada
 }
+
+/**
+ * Comprueba si el jugador actual ha ganado a partir de la última jugada.
+ * @param tablero El tablero actual.
+ * @param fila La fila de la última ficha colocada.
+ * @param col La columna de la última ficha colocada.
+ * @param jugador El símbolo del jugador.
+ * @return true si hay 4 en línea, false en caso contrario.
+ */
+bool verificarVictoria(const Tablero& tablero, int fila, int col, char jugador) {
+    
+    // Función auxiliar para verificar en una dirección
+    auto contarConsecutivas = [&](int dr, int dc) -> int {
+        int contador = 0;
+        // Comprueba en una dirección
+        for (int i = 1; i < 4; ++i) {
+            int r = fila + dr * i;
+            int c = col + dc * i;
+            if (r >= 0 && r < FILAS && c >= 0 && c < COLUMNAS && tablero[r][c] == jugador) {
+                contador++;
+            } else {
+                break;
+            }
+        }
+        return contador;
+    };
+    
+    // Función auxiliar para verificar en ambas direcciones (ej. izquierda y derecha para horizontal)
+    auto verificarDireccion = [&](int dr1, int dc1, int dr2, int dc2) -> bool {
+        // La ficha actual (1) + conteo en dirección 1 + conteo en dirección 2
+        return (1 + contarConsecutivas(dr1, dc1) + contarConsecutivas(dr2, dc2)) >= 4;
+    };
+
+    // 1. Horizontal (Derecha: dr=0, dc=1; Izquierda: dr=0, dc=-1)
+    if (verificarDireccion(0, 1, 0, -1)) return true;
+
+    // 2. Vertical (Abajo: dr=1, dc=0; No se necesita buscar arriba porque las fichas caen)
+    if (contarConsecutivas(1, 0) >= 3) return true; // 1 (actual) + 3 (abajo) = 4
+
+    // 3. Diagonal Ascendente (↗) (Arriba-Derecha: dr=-1, dc=1; Abajo-Izquierda: dr=1, dc=-1)
+    if (verificarDireccion(-1, 1, 1, -1)) return true;
+
+    // 4. Diagonal Descendente (↘) (Abajo-Derecha: dr=1, dc=1; Arriba-Izquierda: dr=-1, dc=-1)
+    if (verificarDireccion(1, 1, -1, -1)) return true;
+
+    return false;
+}
