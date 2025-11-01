@@ -163,3 +163,62 @@ bool verificarEmpate(const Tablero& tablero) {
     }
     return true; // Todos los espacios en la fila superior están llenos
 }
+
+/**
+ * Ejecuta la lógica principal de una partida de Conecta 4.
+ */
+void jugarPartida() {
+    Tablero tablero = inicializarTablero();
+    char jugadorActual = JUGADOR_1;
+    bool juegoTerminado = false;
+    int ultimaFila, ultimaCol;
+
+    cout << "🎉 ¡Bienvenido a Conecta 4!\n";
+    cout << "Jugador 1: " << JUGADOR_1 << " | Jugador 2: " << JUGADOR_2 << "\n";
+
+    while (!juegoTerminado) {
+        mostrarTablero(tablero);
+        
+        cout << "Turno del Jugador " << (jugadorActual == JUGADOR_1 ? "1 (X)" : "2 (O)") << ".\n";
+        
+        // 1. Obtener y validar jugada
+        ultimaCol = obtenerJugadaValida(tablero);
+        
+        // 2. Colocar ficha
+        ultimaFila = colocarFicha(tablero, ultimaCol, jugadorActual);
+        
+        // 3. Verificar condiciones de finalización
+        if (verificarVictoria(tablero, ultimaFila, ultimaCol, jugadorActual)) {
+            mostrarTablero(tablero);
+            cout << "🏆 ¡FELICIDADES! El Jugador " << (jugadorActual == JUGADOR_1 ? "1 (X)" : "2 (O)") << " ha ganado.\n";
+            juegoTerminado = true;
+        } else if (verificarEmpate(tablero)) {
+            mostrarTablero(tablero);
+            cout << "🤝 ¡Empate! El tablero está lleno.\n";
+            juegoTerminado = true;
+        } else {
+            // 4. Alternar turno
+            jugadorActual = (jugadorActual == JUGADOR_1 ? JUGADOR_2 : JUGADOR_1);
+        }
+    }
+}
+
+/**
+ * Función principal del programa.
+ */
+int main() {
+    char respuesta;
+    do {
+        jugarPartida();
+        
+        cout << "¿Quieres jugar otra partida? (s/n): ";
+        cin >> respuesta;
+        // Asegurarse de que el buffer esté limpio para la próxima lectura
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "\n-------------------------------------\n";
+        
+    } while (tolower(respuesta) == 's');
+
+    cout << "¡Gracias por jugar! 👋\n";
+    return 0;
+}
