@@ -43,3 +43,43 @@ void mostrarTablero(const Tablero& tablero) {
     }
     cout << endl;
 }
+
+/**
+ * Solicita una jugada al jugador actual y valida la entrada.
+ * @param tablero El tablero actual.
+ * @return El índice de la columna (0 a 6) seleccionada por el jugador.
+ */
+int obtenerJugadaValida(const Tablero& tablero) {
+    int col;
+    bool jugada_valida = false;
+
+    while (!jugada_valida) {
+        cout << "Ingresa el número de columna (1-" << COLUMNAS << "): ";
+        
+        // Intenta leer la columna
+        if (!(cin >> col)) {
+            cout << "❌ Entrada inválida. Por favor, ingresa un número.\n";
+            // Limpia el estado de error de cin y descarta la entrada restante
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue; // Vuelve a pedir la entrada
+        }
+
+        // Ajusta la columna al índice de C++ (0 a 6)
+        col--; 
+
+        // 1. Verificar si la columna está fuera de rango
+        if (col < 0 || col >= COLUMNAS) {
+            cout << "❌ Columna fuera de rango. Debe ser entre 1 y " << COLUMNAS << ".\n";
+        } 
+        // 2. Verificar si la columna está llena (la celda superior está ocupada)
+        else if (tablero[0][col] != VACIO) {
+            cout << "❌ La columna " << col + 1 << " está llena. Elige otra.\n";
+        } 
+        // La jugada es válida
+        else {
+            jugada_valida = true;
+        }
+    }
+    return col;
+}
