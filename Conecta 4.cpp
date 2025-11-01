@@ -83,3 +83,21 @@ int obtenerJugadaValida(const Tablero& tablero) {
     }
     return col;
 }
+
+/**
+ * Coloca la ficha del jugador en la posición más baja disponible de la columna.
+ * @param tablero El tablero a modificar.
+ * @param col El índice de la columna (0 a 6).
+ * @param jugador El símbolo del jugador ('X' o 'O').
+ * @return La fila donde se colocó la ficha.
+ */
+int colocarFicha(Tablero& tablero, int col, char jugador) {
+    // Recorre desde la fila inferior hacia arriba
+    for (int i = FILAS - 1; i >= 0; --i) {
+        if (tablero[i][col] == VACIO) {
+            tablero[i][col] = jugador;
+            return i; // Retorna la fila donde cayó la ficha
+        }
+    }
+    return -1; // No debería suceder si la columna fue validada
+}
