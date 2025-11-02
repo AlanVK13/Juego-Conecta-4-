@@ -54,11 +54,11 @@ int obtenerJugadaValida(const Tablero& tablero) {
     bool jugada_valida = false;
 
     while (!jugada_valida) {
-        cout << "Ingresa el número de columna (1-" << COLUMNAS << "): ";
+        cout << "Ingresa el numero de columna (1-" << COLUMNAS << "): ";
         
         // Intenta leer la columna
         if (!(cin >> col)) {
-            cout << "❌ Entrada inválida. Por favor, ingresa un número.\n";
+            cout << "❌ Entrada invalida. Por favor, ingresa un numero.\n";
             // Limpia el estado de error de cin y descarta la entrada restante
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -190,11 +190,11 @@ void jugarPartida() {
         // 3. Verificar condiciones de finalización
         if (verificarVictoria(tablero, ultimaFila, ultimaCol, jugadorActual)) {
             mostrarTablero(tablero);
-            cout << "🏆 ¡FELICIDADES! El Jugador " << (jugadorActual == JUGADOR_1 ? "1 (X)" : "2 (O)") << " ha ganado.\n";
+            cout << " ¡FELICIDADES! El Jugador " << (jugadorActual == JUGADOR_1 ? "1 (X)" : "2 (O)") << " ha ganado.\n";
             juegoTerminado = true;
         } else if (verificarEmpate(tablero)) {
             mostrarTablero(tablero);
-            cout << "🤝 ¡Empate! El tablero está lleno.\n";
+            cout << " ¡Empate! El tablero está lleno.\n";
             juegoTerminado = true;
         } else {
             // 4. Alternar turno
@@ -219,6 +219,8 @@ int main() {
         
     } while (tolower(respuesta) == 's');
 
-    cout << "¡Gracias por jugar! 👋\n";
+    cout << "¡Gracias por jugar! \n";
     return 0;
 }
+
+/*CODIGO FUNCIONAL; PROBADO*/
